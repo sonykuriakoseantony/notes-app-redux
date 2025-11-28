@@ -1,6 +1,9 @@
 import React from 'react'
+import { useDispatch } from 'react-redux';
+import { filterNotes } from '../redux/slices/noteSlice';
 
-function NotesCount({tagName, notesCount}) {
+function NotesCount({ tagName, notesCount, activeTag }) {
+  const dispatch = useDispatch();
 
   const tagClasses = {
     Work: { bg: "bg-orange-200", text: "text-orange-900" },
@@ -14,9 +17,12 @@ function NotesCount({tagName, notesCount}) {
 
   const { bg, text } = tagClasses[tagName] || tagClasses.default;
 
+  const isActive = activeTag.toLowerCase() == tagName.toLowerCase();
+
   return (
     <>
-      <div className='flex items-center justify-between border-b py-2 px-3 border-gray-300 cursor-pointer hover:bg-gray-50'>
+      <div className={`flex items-center justify-between border-b py-2 px-3 border-gray-300 cursor-pointer 
+        ${isActive ? "bg-green-700/75" : "hover:bg-gray-50"}`} onClick={() => dispatch(filterNotes(tagName.toLowerCase()))}>
         {/* Color Dot */}
         <div className={`rounded-full ${bg}`} style={{ width: '18px', height: '18px' }}></div>
         {/* Tag name */}
